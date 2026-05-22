@@ -216,3 +216,28 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Dataset
+data/
+
+# Model weights / checkpoints
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+
+# Experiment logs
+runs/
+wandb/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+venv/
+
+# OS files
+.DS_Store
+Thumbs.db
