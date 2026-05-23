@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import os
+import csv
 
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -145,7 +146,7 @@ def train_one_epoch(model, train_loader, criterion, optimizer, device):
     return avg_loss, accuracy
 
 # ==========================
-# 8. Test Funtion
+# 8. Test Function
 # ==========================
 
 def evaluate(model, test_loader, criterion, device):
@@ -179,8 +180,10 @@ def evaluate(model, test_loader, criterion, device):
 # ==========================
 
 best_acc = 0.0
+history = []
 
 os.makedirs("checkpoints", exist_ok=True)
+os.makedirs("results", exist_ok=True)
 
 for epoch in range(epochs):
     train_loss, train_acc = train_one_epoch(
@@ -200,11 +203,19 @@ for epoch in range(epochs):
 
     print(
         f"Epoch [{epoch + 1}/{epochs}] "
-        f"Train Loss: {train_loss:4f} | "
+        f"Train Loss: {train_loss:.4f} | "
         f"Train Acc: {train_acc:.2f}% | "
         f"Test Loss: {test_loss:.4f} | "
         f"Test Acc: {test_acc:.2f}%"
     )
+
+    history.append({
+        "epoch": epoch + 1,
+        "train_loss": train_loss,
+        "train_acc": train_acc,
+        "test_loss": test_loss,
+        "test_acc": test_acc
+    })
 
     if test_acc > best_acc:
         best_acc = test_acc
@@ -215,3 +226,16 @@ for epoch in range(epochs):
         )
 
         print(f"Best model saved! Test Acc: {best_acc:.2f}%")
+
+result_path = f"results/{model_name}_history.csv"
+
+with open(result_path, "w", newline="") as f:
+    writer = csv.DictWriter(
+        f,
+        fieldnames=["epoch", "train_loss", "train_acc", "test_loss", "test_acc"]
+    )
+
+    writer.writeheader()
+    writer.writerows(history)
+
+print(f"Training history saved to {result_path}")
