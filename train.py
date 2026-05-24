@@ -23,7 +23,7 @@ print(f"Using {device} device")
 
 batch_size = 128
 learning_rate = 0.1
-epochs = 1
+epochs = 10
 num_classes = 10
 
 # ==========================
