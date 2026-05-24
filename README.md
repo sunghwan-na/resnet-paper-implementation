@@ -65,7 +65,10 @@ resnet-paper-implementation/
 ├── results/
 │   ├── resnet20_history.csv
 │   ├── resnet20_loss_curve.png
-│   └── resnet20_accuracy_curve.png
+│   ├── resnet20_accuracy_curve.png
+│   ├── plainnet20_history.csv
+│   ├── plainnet20_loss_curve.png
+│   └── plainnet20_accuracy_curve.png
 │
 ├── train.py
 ├── plot_results.py
@@ -92,38 +95,77 @@ The training pipeline includes:
 - CSV history saving
 - Loss and accuracy curve plotting
 
-## Current Test Result
 
-The current result is from a **1 epoch test run** to check whether the training pipeline works correctly.
+## Current Experiment Results
 
-This is **not the final reproduction result**.
+The current results are from a **10 epoch experiment** on CIFAR-10.
+
+This is a simplified reproduction experiment to compare ResNet-20 and PlainNet-20 under the same training setting.
 
 | Model | Epochs | Train Loss | Train Acc | Test Loss | Test Acc |
 |---|---:|---:|---:|---:|---:|
-| ResNet-20 | 1 | 1.6511 | 38.36% | 1.5524 | 44.00% |
+| ResNet-20 | 10 | 0.5752 | 80.31% | 0.8328 | 72.79% |
+| PlainNet-20 | 10 | 0.7482 | 74.22% | 0.8646 | 71.66% |
+
+In this 10 epoch experiment, ResNet-20 achieved higher test accuracy than PlainNet-20 under the same training setting.
+
+This result is consistent with the core idea of the ResNet paper that shortcut connections can help CNN models train more effectively.
+
+However, this is still a simplified experiment. Longer training and deeper models such as ResNet-56 and PlainNet-56 will be tested in future work.
 
 ## Result Curves
 
-### Loss Curve
+The following curves show the 10 epoch training results for ResNet-20 and PlainNet-20.
 
-![Loss Curve](results/resnet20_loss_curve.png)
+### ResNet-20 Loss Curve
 
-### Accuracy Curve
+![ResNet-20 Loss Curve](results/resnet20_loss_curve.png)
 
-![Accuracy Curve](results/resnet20_accuracy_curve.png)
+### ResNet-20 Accuracy Curve
+
+![ResNet-20 Accuracy Curve](results/resnet20_accuracy_curve.png)
+
+### PlainNet-20 Loss Curve
+
+![PlainNet-20 Loss Curve](results/plainnet20_loss_curve.png)
+
+### PlainNet-20 Accuracy Curve
+
+![PlainNet-20 Accuracy Curve](results/plainnet20_accuracy_curve.png)
 
 ## How to Run
 
-Train ResNet-20:
+Train a model:
 
 ```bash
 python train.py
+```
+
+The model can be changed in `train.py`:
+
+```python
+model_name = "resnet20"
+```
+
+Available options:
+
+```text
+resnet20
+resnet56
+plainnet20
+plainnet56
 ```
 
 Plot training results:
 
 ```bash
 python plot_results.py
+```
+
+The target model for plotting can be changed in `plot_results.py`:
+
+```python
+model_name = "resnet20"
 ```
 
 ## Current Status
@@ -135,15 +177,16 @@ Completed:
 - Training pipeline
 - CSV result saving
 - Loss and accuracy plot generation
-- Initial 1 epoch test run
+- ResNet-20 10 epoch experiment
+- PlainNet-20 10 epoch experiment
+- Basic comparison between ResNet-20 and PlainNet-20
 
 Next steps:
 
-- Train ResNet-20 for more epochs
-- Train PlainNet-20 under the same setting
-- Compare PlainNet-20 vs ResNet-20
 - Extend experiments to PlainNet-56 and ResNet-56
-- Analyze whether residual connections improve deep network training
+- Train models for more epochs
+- Add detailed analysis of training and test curves
+- Compare results with the original ResNet paper
 
 ## Notes
 
